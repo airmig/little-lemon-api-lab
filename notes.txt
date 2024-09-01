@@ -9,3 +9,17 @@ Password: falcon@42!
 Delivery Crew
 Username: lunarwave73
 Password: shell@73!
+
+Customers
+Username: test
+Password: test@123!
+
+Username: testuser3
+Password: test@1234!
+
+Username: testuser4
+Password: test@1234!
+
+Username: testuser5
+Password: test@1234!
+

@@ -17,6 +17,29 @@ def DefaultView(request):
     return render(request,'home.html')
 
 class OrderItems(generics.ListCreateAPIView, generics.UpdateAPIView):
+    def get_permissions(self):
+        if self.request.method == 'DELETE':
+            return [permission() for permission in [IsAuthenticated, IsManagerOrAdmin]]
+        
+        return [permission() for permission in [IsAuthenticated]]
+
+    def delete(self, request, *args, **kwargs):
+        pk = None
+        try:
+            pk = kwargs['pk']
+        except:
+            return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        try:
+            pk = kwargs['pk']
+            try:
+                order = Order.objects.get(pk=pk)
+            except:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            order.delete()
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(status=status.HTTP_200_OK)
+
     def patch(self, request, *args, **kwargs):
         user = request.user
         pk = None
@@ -34,7 +57,10 @@ class OrderItems(generics.ListCreateAPIView, generics.UpdateAPIView):
                 serializer = StatusSerializer(data=request.data)
                 if serializer.is_valid():
                     try:
-                        order =  Order.objects.get(pk=pk)
+                        try:
+                            order =  Order.objects.get(pk=pk)
+                        except:
+                            return Response({'error':'Order not found'}, status=status.HTTP_404_NOT_FOUND)
                         order.status = bool(int(status_value))
                         order.save()
                         return Response(status=status.HTTP_200_OK)
@@ -42,11 +68,28 @@ class OrderItems(generics.ListCreateAPIView, generics.UpdateAPIView):
                         return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                 else:
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            elif user.groups.filter(name__in=['Manager']).exists():
+                status_value = request.data.get('status', None)
+                delivery_crew = request.data.get('delivery_crew', None)
+                try:
+                    order = Order.objects.get(pk=pk)
+                    if status_value is not None:
+                        order.status  = bool((int(status_value)))
+                    if delivery_crew is not None:
+                        try:
+                            user_crew = User.objects.get(pk=delivery_crew)
+                        except:
+                            return Response({'error': 'Invalid delivery crew user'},status=status.HTTP_404_NOT_FOUND)
+                        order.delivery_crew = user_crew
+                    order.save()
+                    return Response(status=status.HTTP_200_OK)
+                except:
+                    return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
             else:
                  return Response(status=status.HTTP_403_FORBIDDEN)
         else:
             return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
-        
 
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -164,7 +207,6 @@ class MenuItemSingle(generics.ListAPIView, generics.ListCreateAPIView):
     def get_permissions(self):
         if self.request.method == 'GET':
             return [permission() for permission in [IsAuthenticated]]
-        rc = [permission() for permission in [IsAuthenticated, IsManagerOrAdmin]]
         return [permission() for permission in [IsAuthenticated, IsManagerOrAdmin]]
 
 
@@ -175,7 +217,6 @@ class MenuItemView(generics.RetrieveUpdateDestroyAPIView, generics.ListCreateAPI
     def get_permissions(self):
         if self.request.method == 'GET':
             return [permission() for permission in [IsAuthenticated]]
-        rc = [permission() for permission in [IsAuthenticated, IsManagerOrAdmin]]
         return [permission() for permission in [IsAuthenticated, IsManagerOrAdmin]]
     
 @api_view(['GET', 'POST', 'DELETE'])
