@@ -1,0 +1,32 @@
+<h3>User Registration and Token Generation</h3>
+
+    <table>
+        <thead>
+        <tr class="tableheader">
+        <th>Endpoint</th>
+        <th>Role</th>
+        <th>Method</th>
+        <th>Purpose</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td><code><a href="{% url 'user-list' %}">/api/users</a></code></td>
+        <td>No role required</td>
+        <td>POST</td>
+        <td>Creates a new user with name, email, and password.</td>
+        </tr>
+        <tr>
+        <td><code><a href="{% url 'user-me' %}">/api/users/me/</a></code></td>
+        <td>Anyone with a valid user token</td>
+        <td>GET</td>
+        <td>Displays the current user.</td>
+        </tr>
+        <tr>
+        <td><code><a href="{% url 'login' %}">/token/login/</a></code></td>
+        <td>Anyone with a valid username and password</td>
+        <td>POST</td>
+        <td>Generates access tokens for use in other API calls.</td>
+        </tr>
+        </tbody>
+        </table>

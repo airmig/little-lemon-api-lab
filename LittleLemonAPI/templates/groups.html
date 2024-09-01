@@ -1,0 +1,75 @@
+<h3>Manager Group Endpoints</h3>
+<table>
+    <thead class="tableheader">
+    <tr>
+    <th>Endpoint</th>
+    <th>Role</th>
+    <th>Method</th>
+    <th>Purpose</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>/api/groups/manager/users</code></td>
+    <td>Manager</td>
+    <td>GET</td>
+    <td>Returns all managers.</td>
+    </tr>
+    <tr>
+    <td><code>/api/groups/manager/users</code></td>
+    <td>Manager</td>
+    <td>POST</td>
+    <td>Assigns a user to the manager group and returns 201 - Created.</td>
+    </tr>
+    <tr>
+    <td><code>/api/groups/manager/users/{userId}</code></td>
+    <td>Manager</td>
+    <td>DELETE</td>
+    <td>Removes a user from the manager group and returns 200 - Success.</td>
+    </tr>
+    <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>If the user is not found, returns 404 – Not Found.</td>
+    </tr>
+    </tbody>
+    </table>
+    <br/>
+    <h3>Delivery Crew Group Endpoints</h3>
+    <table>
+        <thead class="tableheader">
+        <tr>
+        <th>Endpoint</th>
+        <th>Role</th>
+        <th>Method</th>
+        <th>Purpose</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td><code>/api/groups/delivery-crew/users</code></td>
+        <td>Manager</td>
+        <td>GET</td>
+        <td>Returns all delivery crew members.</td>
+        </tr>
+        <tr>
+        <td><code>/api/groups/delivery-crew/users</code></td>
+        <td>Manager</td>
+        <td>POST</td>
+        <td>Assigns a user to the delivery crew group and returns 201 - Created.</td>
+        </tr>
+        <tr>
+        <td><code>/api/groups/delivery-crew/users/{userId}</code></td>
+        <td>Manager</td>
+        <td>DELETE</td>
+        <td>Removes a user from the delivery crew group and returns 200 - Success.</td>
+        </tr>
+        <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>If the user is not found, returns 404 – Not Found.</td>
+        </tr>
+        </tbody>
+        </table>

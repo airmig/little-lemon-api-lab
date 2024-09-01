@@ -1,0 +1,82 @@
+
+<h3>Endpoints for Customers and Delivery Crew</h3>
+<table>
+    <thead class="tableheader">
+    <tr>
+    <th>Endpoint</th>
+    <th>Role</th>
+    <th>Method</th>
+    <th>Purpose</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>/api/menu-items</code></td>
+    <td>Customer, Delivery Crew</td>
+    <td>GET</td>
+    <td>Lists all menu items. Returns a 200 – OK HTTP status code.</td>
+    </tr>
+    <tr>
+    <td><code>/api/menu-items</code></td>
+    <td>Customer, Delivery Crew</td>
+    <td>POST, PUT, PATCH, DELETE</td>
+    <td>Denies access and returns 403 – Unauthorized.</td>
+    </tr>
+    <tr>
+    <td><code>/api/menu-items/{menuItem}</code></td>
+    <td>Customer, Delivery Crew</td>
+    <td>GET</td>
+    <td>Lists a single menu item.</td>
+    </tr>
+    <tr>
+    <td><code>/api/menu-items/{menuItem}</code></td>
+    <td>Customer, Delivery Crew</td>
+    <td>POST, PUT, PATCH, DELETE</td>
+    <td>Returns 403 – Unauthorized.</td>
+    </tr>
+    </tbody>
+    </table>
+<br/>
+<h3>Endpoints for Managers</h3>
+    <table>
+        <thead class="tableheader">
+        <tr>
+        <th>Endpoint</th>
+        <th>Role</th>
+        <th>Method</th>
+        <th>Purpose</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td><code>/api/menu-items</code></td>
+        <td>Manager</td>
+        <td>GET</td>
+        <td>Lists all menu items.</td>
+        </tr>
+        <tr>
+        <td><code>/api/menu-items</code></td>
+        <td>Manager</td>
+        <td>POST</td>
+        <td>Creates a new menu item and returns 201 - Created.</td>
+        </tr>
+        <tr>
+        <td><code>/api/menu-items/{menuItem}</code></td>
+        <td>Manager</td>
+        <td>GET</td>
+        <td>Lists a single menu item.</td>
+        </tr>
+        <tr>
+        <td><code>/api/menu-items/{menuItem}</code></td>
+        <td>Manager</td>
+        <td>PUT, PATCH</td>
+        <td>Updates the specified menu item.</td>
+        </tr>
+        <tr>
+        <td><code>/api/menu-items/{menuItem}</code></td>
+        <td>Manager</td>
+        <td>DELETE</td>
+        <td>Deletes the specified menu item.</td>
+        </tr>
+        </tbody>
+        </table>

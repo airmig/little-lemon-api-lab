@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    font-family: "Prata", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.logoimg {
+    object-fit: cover;
+    height: 40px;
+    display: inline;
+}
+.header {
+    font-weight: bold;
+    color:green;
+    display: inline;
+    margin-top: 20px;
+}
+table {
+    border:1px solid rgb(157, 150, 150);
+    border-radius: 10;
+}
+.tableheader {
+    background-color: rgb(251, 221, 51);
+}
+
+table tbody tr {
+    border-bottom: 1px dotted grey;
+}
+
+table th, td{
+    padding: 10px;
+}

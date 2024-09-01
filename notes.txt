@@ -1,0 +1,11 @@
+SuperUser password
+Username: admin
+Password: admin
+
+Manager
+Username: swiftfalcon42
+Password: falcon@42!
+
+Delivery Crew
+Username: lunarwave73
+Password: shell@73!
