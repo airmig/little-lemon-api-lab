@@ -1,0 +1,37 @@
+<h3>Endpoints for Customers</h3>
+<table>
+    <thead class="tableheader">
+    <tr>
+    <th>Endpoint</th>
+    <th>Role</th>
+    <th>Method</th>
+    <th>Purpose</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>/api/orders</code></td>
+    <td>Customer</td>
+    <td>GET</td>
+    <td>Returns all orders with order items created by the current user.</td>
+    </tr>
+    <tr>
+    <td><code>/api/orders</code></td>
+    <td>Customer</td>
+    <td>POST</td>
+    <td>Creates a new order for the current user, moving items from the cart to the order.</td>
+    </tr>
+    <tr>
+    <td><code>/api/orders/{orderId}</code></td>
+    <td>Customer</td>
+    <td>GET</td>
+    <td>Returns all items for the specified order. If the order ID doesn’t belong to the current user, returns an error.</td>
+    </tr>
+    <tr>
+    <td><code>/api/orders/{orderId}</code></td>
+    <td>Customer</td>
+    <td>PUT, PATCH</td>
+    <td>Updates the specified order. Customers can only update their own orders.</td>
+    </tr>
+    </tbody>
+    </table>

@@ -1,0 +1,25 @@
+<h3>Endpoints for Delivery Crew</h3>
+<table>
+    <thead class="tableheader">
+    <tr>
+    <th>Endpoint</th>
+    <th>Role</th>
+    <th>Method</th>
+    <th>Purpose</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>/api/orders</code></td>
+    <td>Delivery Crew</td>
+    <td>GET</td>
+    <td>Returns all orders with order items assigned to the delivery crew.</td>
+    </tr>
+    <tr>
+    <td><code>/api/orders/{orderId}</code></td>
+    <td>Delivery Crew</td>
+    <td>PATCH</td>
+    <td>Updates the order status (0 for out for delivery, 1 for delivered). Cannot update other order details.</td>
+    </tr>
+    </tbody>
+    </table>

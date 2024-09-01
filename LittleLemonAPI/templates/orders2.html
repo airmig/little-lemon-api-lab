@@ -1,0 +1,31 @@
+<h3>Endpoints for Managers</h3>
+<table>
+    <thead class="tableheader">
+    <tr>
+    <th>Endpoint</th>
+    <th>Role</th>
+    <th>Method</th>
+    <th>Purpose</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>/api/orders</code></td>
+    <td>Manager</td>
+    <td>GET</td>
+    <td>Returns all orders with order items from all users.</td>
+    </tr>
+    <tr>
+    <td><code>/api/orders/{orderId}</code></td>
+    <td>Manager</td>
+    <td>PUT, PATCH</td>
+    <td>Updates the specified order. Can assign delivery crew and update order status (0 for out for delivery, 1 for delivered).</td>
+    </tr>
+    <tr>
+    <td><code>/api/orders/{orderId}</code></td>
+    <td>Manager</td>
+    <td>DELETE</td>
+    <td>Deletes the specified order.</td>
+    </tr>
+    </tbody>
+    </table>

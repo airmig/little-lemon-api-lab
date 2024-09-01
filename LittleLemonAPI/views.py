@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
@@ -17,6 +17,10 @@ def DefaultView(request):
     return render(request,'home.html')
 
 class OrderItems(generics.ListCreateAPIView, generics.UpdateAPIView):
+    ordering_fields = ['user', 'delivery_crew', 'status', 'total', 'date']
+    search_fields = ['id']
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+
     def get_permissions(self):
         if self.request.method == 'DELETE':
             return [permission() for permission in [IsAuthenticated, IsManagerOrAdmin]]
@@ -204,11 +208,14 @@ class MenuItemSingle(generics.ListAPIView, generics.ListCreateAPIView):
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
 
+    ordering_fields = ['title','price','featured','category']
+    search_fields = ['title']
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+
     def get_permissions(self):
         if self.request.method == 'GET':
             return [permission() for permission in [IsAuthenticated]]
         return [permission() for permission in [IsAuthenticated, IsManagerOrAdmin]]
-
 
 class MenuItemView(generics.RetrieveUpdateDestroyAPIView, generics.ListCreateAPIView):
     queryset =  MenuItem.objects.all()
