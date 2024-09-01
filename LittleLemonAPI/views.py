@@ -16,7 +16,7 @@ from datetime import date
 def DefaultView(request):
     return render(request,'home.html')
 
-class OrderItems(generics.ListCreateAPIView):
+class OrderItems(generics.ListCreateAPIView, generics.UpdateAPIView):
     def patch(self, request, *args, **kwargs):
         user = request.user
         pk = None
@@ -27,11 +27,15 @@ class OrderItems(generics.ListCreateAPIView):
             pass
         if user.is_authenticated:
             if user.groups.filter(name__in=['Delivery Crew']).exists():
-                serializer = StatusSerializer(data=request.data.get('status'))
+                status_value = request.data.get('status', None)
+                if status_value is None:
+                    return Response({"error": "Status is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+                serializer = StatusSerializer(data=request.data)
                 if serializer.is_valid():
                     try:
                         order =  Order.objects.get(pk=pk)
-                        order.status = status
+                        order.status = bool(int(status_value))
                         order.save()
                         return Response(status=status.HTTP_200_OK)
                     except Exception as e:
@@ -55,22 +59,24 @@ class OrderItems(generics.ListCreateAPIView):
         if user.is_authenticated:
             if not pk:
                 if user.groups.filter(name__in=['Manager']).exists() or user.is_superuser:
-                    print('isadmin')
                     queryset = Order.objects.all()
                 elif user.groups.filter(name__in=['Delivery Crew']).exists():
-                    print('delivery crew')
                     delivery_group = Group.objects.get(name='Delivery Crew')
                     #queryset = Order.objects.filter(user__groups=delivery_group)
                     queryset = Order.objects.filter(delivery_crew__isnull=False)
                 else:
                     queryset = Order.objects.filter(user=user)
                 serialize = OrderSerializer(queryset,many=True)
+                return Response(serialize.data, status=status.HTTP_200_OK)
             else:
-                queryset = Order.objects.get(id=pk)
-                if queryset.user != user:
-                    return Response(status=status.HTTP_403_FORBIDDEN)
-                serialize = OrderSerializer(queryset)
-            return Response(serialize.data, status=status.HTTP_200_OK)
+                try:
+                    queryset = Order.objects.get(id=pk)
+                    if queryset.user != user:
+                        return Response(status=status.HTTP_403_FORBIDDEN)
+                    serialize = OrderSerializer(queryset)
+                    return Response(serialize.data, status=status.HTTP_200_OK)
+                except Order.DoesNotExist:
+                    return Response({'error': 'Order not found'}, status= status.HTTP_404_NOT_FOUND)
         else:
             return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -83,12 +89,10 @@ class OrderItems(generics.ListCreateAPIView):
                     total = 0
                     for item in items:
                         total = total + item.price
-                    print('total', total)
                     order = Order(user=user, total=total, date=date.today())
                     order.save()
                     order_items = []
                     for item in items:
-                        print(item.menuitem.title, item.price)
                         order_item = OrderItem(
                                 order=order,
                                 menuitem=item.menuitem,
@@ -146,7 +150,6 @@ class CartMenuItems(generics.ListCreateAPIView, generics.DestroyAPIView):
                     cart_item = Cart(user=user, menuitem=item, quantity=request.data['quantity'], price=price, unit_price=unit_price)
                     cart_item.save()
                 except Exception as e:
-                    print(e)
                     return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -260,7 +263,6 @@ def getCrew(request, pk=None):
             user.groups.add(manager_group)
             user.save()
         except Exception as e:
-            print(e)
             return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         return Response(status=status.HTTP_201_CREATED)
@@ -287,7 +289,6 @@ def getCrew(request, pk=None):
             user.groups.remove(manager_group)
             user.save()
         except Exception as e:
-            print(e)
             return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         return Response(status=status.HTTP_200_OK)

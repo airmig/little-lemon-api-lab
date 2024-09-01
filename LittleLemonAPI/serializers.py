@@ -16,7 +16,9 @@ class OrderSerializer(serializers.ModelSerializer):
 class StatusSerializer(serializers.Serializer):
     status = serializers.BooleanField()
     def validate_status(self, value):
-        if value == 1 or value == 0:
+        if value == 1:
+            return value
+        if value == 0:
             return value
         else:
             raise serializers.ValidationError({"error": "item can be 0 or 1"})
